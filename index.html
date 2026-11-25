@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Temukan Bakat & Minatmu! ✨</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-cream: #FFF9F5;
+      --pink: #FF8FA3;
+      --pink-dark: #FF6B8B;
+      --yellow: #FFD166;
+      --blue: #4CC9F0;
+      --mint: #06D6A0;
+      --purple: #B5179E;
+      --text-dark: #3D344B;
+      --text-muted: #766C85;
+      --white: #FFFFFF;
+      --shadow: 0 10px 25px rgba(181, 23, 158, 0.12);
+      --shadow-btn: 0 6px 0 rgba(61, 52, 75, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      background-image:
+        radial-gradient(rgba(255, 143, 163, 0.25) 3px, transparent 3px),
+        radial-gradient(rgba(76, 201, 240, 0.25) 3px, transparent 3px);
+      background-size: 48px 48px;
+      background-position: 0 0, 24px 24px;
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 16px;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .font-fredoka {
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    /* Floating Sound Control */
+    .top-controls {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 100;
+      display: flex;
+      gap: 10px;
+    }
+
+    .icon-btn {
+      background: var(--white);
+      border: 3px solid var(--yellow);
+      border-radius: 50px;
+      padding: 8px 14px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.08);
+    }
+
+    .icon-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Main Card Container */
+    .app-container {
+      width: 100%;
+      max-width: 680px;
+      background: var(--white);
+      border-radius: 32px;
+      padding: 32px 28px;
+      box-shadow: var(--shadow);
+      border: 4px solid #FFE5EC;
+      position: relative;
+      z-index: 10;
+      transition: all 0.3s ease;
+    }
+
+    .screen {
+      display: none;
+      animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.92) translateY(12px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes floatMascot {
+      0%, 100% { transform: translateY(0) rotate(-3deg); }
+      50% { transform: translateY(-10px) rotate(3deg); }
+    }
+
+    @keyframes bouncePop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.08); }
+      70% { transform: scale(0.96); }
+      100% { transform: scale(1); }
+    }
+
+    /* Welcome Screen */
+    .welcome-header {
+      text-align: center;
+    }
+
+    .mascot-hero {
+      font-size: 4.8rem;
+      display: inline-block;
+      animation: floatMascot 3s ease-in-out infinite;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 8px 12px rgba(255, 143, 163, 0.3));
+    }
+
+    .badge-pill {
+      display: inline-block;
+      background: #FFF0F3;
+      color: var(--pink-dark);
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      border: 2px dashed var(--pink);
+    }
+
+    .welcome-title {
+      font-size: 2.2rem;
+      color: var(--text-dark);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .welcome-title span {
+      color: var(--pink-dark);
+    }
+
+    .welcome-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .name-input-box {
+      background: #F8F9FA;
+      border: 3px solid var(--blue);
+      border-radius: 24px;
+      padding: 18px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .name-input-box label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+      font-size: 1.05rem;
+    }
+
+    .name-input {
+      width: 100%;
+      max-width: 340px;
+      padding: 14px 20px;
+      border-radius: 24px;
+      border: 3px solid #D0EFFF;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-align: center;
+      color: var(--text-dark);
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .name-input:focus {
+      border-color: var(--pink);
+      box-shadow: 0 0 0 4px rgba(255, 143, 163, 0.2);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink) 0%, var(--pink-dark) 100%);
+      color: var(--white);
+      border: none;
+      border-radius: 24px;
+      padding: 16px 36px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 0 #D94E6D, 0 12px 20px rgba(255, 107, 139, 0.35);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+    }
+
+    .btn-primary:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #D94E6D;
+    }
+
+    /* Quiz Screen */
+    .progress-wrapper {
+      margin-bottom: 24px;
+    }
+
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .question-counter {
+      background: var(--yellow);
+      color: var(--text-dark);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    .player-tag {
+      color: var(--purple);
+      background: #F3E5F5;
+      padding: 5px 14px;
+      border-radius: 20px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 18px;
+      background: #F0EBF4;
+      border-radius: 24px;
+      position: relative;
+      overflow: visible;
+      border: 2px solid #E2D9EA;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 2%;
+      background: linear-gradient(90deg, var(--mint), var(--blue), var(--pink));
+      border-radius: 24px;
+      transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .progress-runner {
+      position: absolute;
+      top: -12px;
+      left: 2%;
+      transform: translateX(-50%);
+      font-size: 1.7rem;
+      transition: left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(0 3px 4px rgba(0,0,0,0.15));
+      user-select: none;
+    }
+
+    /* Mascot Speech Bubble */
+    .mascot-interaction {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #FFF8E7;
+      border: 3px solid var(--yellow);
+      border-radius: 24px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .mascot-avatar {
+      font-size: 2.6rem;
+      flex-shrink: 0;
+      animation: bouncePop 0.5s ease;
+    }
+
+    .speech-text {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.4;
+    }
+
+    /* Question Card */
+    .question-box {
+      background: #F7FCFF;
+      border: 3px solid #D6F1FF;
+      border-radius: 24px;
+      padding: 22px 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .question-text {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      line-height: 1.45;
+    }
+
+    /* Options Grid */
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      background: var(--white);
+      border: 3px solid #EAE2F0;
+      border-radius: 24px;
+      padding: 15px 18px;
+      text-align: left;
+      font-size: 1.02rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 0 #EAE2F0;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--blue);
+      background: #F0FAFF;
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 6px 0 #BCE8FF;
+    }
+
+    .option-btn:active:not(:disabled) {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #BCE8FF;
+    }
+
+    .option-btn.selected {
+      background: #E6FFF7;
+      border-color: var(--mint);
+      box-shadow: 0 5px 0 #05B386;
+      animation: bouncePop 0.4s ease;
+    }
+
+    .option-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #FFF0F3;
+      color: var(--pink-dark);
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+
+    .option-btn:nth-child(2) .option-badge { background: #FFF8E1; color: #D99B00; }
+    .option-btn:nth-child(3) .option-badge { background: #E0F7FA; color: #0097A7; }
+    .option-btn:nth-child(4) .option-badge { background: #F3E5F5; color: var(--purple); }
+
+    /* Pop-up Reaction Toast */
+    .reaction-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.5);
+      background: var(--white);
+      border: 4px solid var(--pink);
+      border-radius: 28px;
+      padding: 18px 26px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.18);
+      z-index: 200;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      max-width: 90%;
+    }
+
+    .reaction-popup.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .reaction-sticker {
+      font-size: 3.2rem;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .reaction-msg {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.15rem;
+      color: var(--text-dark);
+    }
+
+    /* Result Screen */
+    .result-header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .result-badge-big {
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 14px;
+      background: linear-gradient(135deg, #FFF3B0, #FFD166);
+      border: 5px solid var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      box-shadow: 0 10px 25px rgba(255, 209, 102, 0.5);
+      animation: floatMascot 2.8s ease-in-out infinite;
+    }
+
+    .result-subtitle {
+      font-weight: 700;
+      color: var(--pink-dark);
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .result-title {
+      font-size: 1.95rem;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+
+    .result-card {
+      background: #FFF9FB;
+      border: 3px solid #FFD6E0;
+      border-radius: 24px;
+      padding: 20px;
+      margin-bottom: 20px;
+      line-height: 1.65;
+    }
+
+    .result-card p {
+      margin-bottom: 14px;
+      font-weight: 600;
+    }
+
+    .tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .talent-tag {
+      background: var(--white);
+      border: 2px solid var(--mint);
+      color: #048A67;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    /* Chart Bars */
+    .chart-section {
+      background: #F8FAFC;
+      border: 3px solid #E2E8F0;
+      border-radius: 24px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .chart-title {
+      font-size: 1.15rem;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .bar-item {
+      margin-bottom: 14px;
+    }
+
+    .bar-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      font-size: 0.92rem;
+      margin-bottom: 5px;
+    }
+
+    .bar-bg {
+      width: 100%;
+      height: 14px;
+      background: #E9ECEF;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 20px;
+      width: 0%;
+      transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-secondary {
+      background: var(--blue);
+      color: var(--white);
+      border: none;
+      border-radius: 24px;
+      padding: 14px 24px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #2BA8D1;
+      transition: all 0.2s;
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-mint {
+      background: var(--mint);
+      box-shadow: 0 5px 0 #04A87D;
+    }
+
+    /* Confetti Canvas */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 150;
+    }
+
+    @media (max-width: 520px) {
+      .app-container {
+        padding: 24px 18px;
+        border-radius: 28px;
+      }
+      .welcome-title {
+        font-size: 1.75rem;
+      }
+      .question-text {
+        font-size: 1.18rem;
+      }
+      .option-btn {
+        padding: 13px 14px;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="top-controls">
+    <button class="icon-btn" id="soundToggle" title="Suara & Musik">
+      <span id="soundIcon">🔊</span> <span id="soundLabel">Suara ON</span>
+    </button>
+  </div>
+
+  <!-- Pop-up Reaction Toast -->
+  <div class="reaction-popup" id="reactionPopup">
+    <span class="reaction-sticker" id="popupSticker">🥳</span>
+    <div class="reaction-msg" id="popupMsg">Keren banget pilihanmu!</div>
+  </div>
+
+  <main class="app-container">
+    <!-- 1. WELCOME SCREEN -->
+    <section class="screen active" id="welcomeScreen">
+      <div class="welcome-header">
+        <div class="mascot-hero">🦄</div>
+        <div><span class="badge-pill">✨ 50 Petualangan Seru Menantimu!</span></div>
+        <h1 class="welcome-title">Temukan <span>Bakat & Minat</span> Tersembunyimu!</h1>
+        <p class="welcome-desc">
+          Bukan tes kaku yang bikin ngantuk! Jawab 50 situasi seru sehari-hari bareng <strong>Mochi si Unicorn</strong> dan temukan potensi terbaik dalam dirimu! 🌈
+        </p>
+
+        <div class="name-input-box">
+          <label for="userNameInput">Siapa nama panggilanmu, Petualang? 🌟</label>
+          <input type="text" id="userNameInput" class="name-input" placeholder="Ketik namamu di sini..." maxlength="20" />
+        </div>
+
+        <button class="btn-primary" id="startBtn">
+          <span>Mulai Petualangan!</span> 🚀
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. QUIZ SCREEN -->
+    <section class="screen" id="quizScreen">
+      <div class="progress-wrapper">
+        <div class="progress-top">
+          <span class="question-counter" id="questionCounter">Soal 1 / 50</span>
+          <span class="player-tag" id="playerTag">🌟 Petualang</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+          <div class="progress-runner" id="progressRunner">🚀</div>
+        </div>
+      </div>
+
+      <div class="mascot-interaction">
+        <div class="mascot-avatar" id="mascotAvatar">🐱</div>
+        <div class="speech-text" id="mascotSpeech">Halo! Pilih jawaban yang paling menggambarkan dirimu ya! ✨</div>
+      </div>
+
+      <div class="question-box">
+        <h2 class="question-text" id="questionText">Memuat pertanyaan...</h2>
+      </div>
+
+      <div class="options-list" id="optionsContainer">
+        <!-- Options injected via JS -->
+      </div>
+    </section>
+
+    <!-- 3. RESULT SCREEN -->
+    <section class="screen" id="resultScreen">
+      <div class="result-header">
+        <div class="result-badge-big" id="resultEmoji">🎨</div>
+        <div class="result-subtitle" id="resultUserGreeting">Selamat, Petualang! Bakat Utamamu Adalah:</div>
+        <h2 class="result-title" id="resultTitle">Si Kreator Imajinatif</h2>
+      </div>
+
+      <div class="result-card">
+        <p id="resultDesc">Deskripsi kekuatan dirimu akan muncul di sini.</p>
+        <strong>💡 Rekomendasi Hobi & Karier Cocok:</strong>
+        <div class="tags-container" id="resultTags"></div>
+      </div>
+
+      <div class="chart-section">
+        <h3 class="chart-title">📊 Peta Potensi 6 Bidang Minatmu</h3>
+        <div id="chartBars"></div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="btn-secondary btn-mint" id="copyResultBtn">📋 Salin Hasilku</button>
+        <button class="btn-secondary" id="restartBtn">🔄 Ulangi Tes</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ==========================================
+    // 1. WEB AUDIO API (Cute Pop & Cheerful BGM)
+    // ==========================================
+    let soundEnabled = true;
+    let audioCtx = null;
+    let bgmInterval = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function playPopSound() {
+      if (!soundEnabled) return;
+      initAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(520, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.12);
+
+      gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.14);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.14);
+    }
+
+    function playFanfareSound() {
+      if (!soundEnabled) return;
+      initAudio();
+      const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+      notes.forEach((freq, idx) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        const startTime = audioCtx.currentTime + idx * 0.11;
+        osc.frequency.setValueAtTime(freq, startTime);
+        gain.gain.setValueAtTime(0.16, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.35);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + 0.35);
+      });
+    }
+
+    function startSoftBGM() {
+      if (bgmInterval) clearInterval(bgmInterval);
+      const melody = [523.25, 587.33, 659.25, 783.99, 659.25, 587.33, 523.25, 392.00];
+      let step = 0;
+      bgmInterval = setInterval(() => {
+        if (!soundEnabled || !audioCtx || audioCtx.state !== 'running') return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(melody[step % melody.length], audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.025, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0005, audioCtx.currentTime + 0.35);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.35);
+        step++;
+      }, 450);
+    }
+
+    document.getElementById('soundToggle').addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      document.getElementById('soundIcon').textContent = soundEnabled ? '🔊' : '🔇';
+      document.getElementById('soundLabel').textContent = soundEnabled ? 'Suara ON' : 'Suara OFF';
+      if (soundEnabled) {
+        initAudio();
+        playPopSound();
+      }
+    });
+
+    // ==========================================
+    // 2. DATA 6 KATEGORI BAKAT & MINAT
+    // ==========================================
+    // Kode Kategori:
+    // K = Kreator Imajinatif
+    // L = Pemecah Masalah & Logika
+    // C = Komunikator Karismatik
+    // V = Pemimpin Visioner
+    // E = Penjaga Empati
+    // P = Petualang & Praktisi
+
+    const categories = {
+      K: {
+        name: "Si Kreator Imajinatif",
+        emoji: "🎨",
+        color: "#FF8FA3",
+        desc: "Kamu punya imajinasi seluas galaksi! Otakmu selalu penuh ide segar, kepekaan estetika tinggi, dan cara pandang unik yang sering bikin orang lain terpukau. Kamu paling bersinar saat bebas mengekspresikan diri lewat karya.",
+        tags: ["Desain Grafis & UI/UX", "Content Creator", "Musik & Produksi Audio", "Ilustrator / Animator", "Penulis Kreatif", "Fotografi & Videografi"]
+      },
+      L: {
+        name: "Si Pemecah Masalah & Logika",
+        emoji: "💻",
+        color: "#4CC9F0",
+        desc: "Kamu adalah detektif sejati yang suka mencari tahu cara kerja segala sesuatu! Pikiranmu sistematis, analitis, dan senang memecahkan teka-teki rumit. Tantangan teknis atau data justru membuatmu semakin bersemangat.",
+        tags: ["Software Developer / Coding", "Data Analyst / AI", "Sains & Riset", "Game Developer", "Cybersecurity", "Engineering"]
+      },
+      C: {
+        name: "Si Komunikator Karismatik",
+        emoji: "🎤",
+        color: "#FFD166",
+        desc: "Energi sosialmu menular ke siapa saja! Kamu pandai merangkai kata, mencairkan suasana, dan membuat orang lain nyaman mendengarkan ceritamu. Panggung, kamera, atau diskusi seru adalah habitat alami tempatmu bersinar.",
+        tags: ["Public Speaker / MC", "Podcaster & Presenter", "Public Relations", "Digital Marketing", "Aktor / Entertainer", "Social Media Strategist"]
+      },
+      V: {
+        name: "Si Pemimpin Visioner",
+        emoji: "👑",
+        color: "#B5179E",
+        desc: "Kamu punya insting strategi yang tajam dan berani mengambil inisiatif! Saat orang lain masih bingung mulai dari mana, kamu sudah melihat gambaran besar dan menyusun langkah nyata untuk mencapai target.",
+        tags: ["Entrepreneur / Startup", "Project Manager", "Business Strategist", "Event Organizer", "Product Manager", "Investor & Finansial"]
+      },
+      E: {
+        name: "Si Penjaga Empati",
+        emoji: "💖",
+        color: "#FF6B8B",
+        desc: "Hatimu hangat dan sangat peka terhadap perasaan orang di sekitarmu! Kamu adalah tempat curhat terbaik, pendengar yang tulus, dan selalu tergerak untuk membantu orang lain tumbuh menjadi lebih baik.",
+        tags: ["Psikolog / Konselor", "Tenaga Kesehatan", "Guru / Mentor", "HR & People Development", "Aktivis Sosial", "Terapis"]
+      },
+      P: {
+        name: "Si Petualang & Praktisi",
+        emoji: "🌿",
+        color: "#06D6A0",
+        desc: "Kamu tipe orang yang belajar paling cepat lewat praktik langsung! Kamu suka bergerak aktif, mengeksplorasi dunia nyata, menciptakan sesuatu dengan tanganmu sendiri, dan tidak betah diam terlalu lama di depan layar.",
+        tags: ["Chef / Kuliner", "Atlet & Pelatih Kebugaran", "Arsitek / Interior", "Kriya & Kerajinan Tangan", "Travel & Ekowisata", "Dokter Hewan / Agrikultur"]
+      }
+    };
+
+    // ==========================================
+    // 3. 50 VARIASI INTERAKSI & STIKER LUCU
+    // ==========================================
+    const reactions = [
+      { sticker: "🥳", text: "Pilihan yang asyik! Mochi makin kenal sama kamu nih! ✨" },
+      { sticker: "🐱", text: "Meow~ Instingmu tajam sekali di soal ini!" },
+      { sticker: "🌟", text: "Bintang bersinar untuk jawaban jujurmu! Lanjut yuk!" },
+      { sticker: "🦄", text: "Wah, unik banget cara berpikirmu! Keren!" },
+      { sticker: "💡", text: "Ting! Ide cemerlang terdeteksi di kepalamu!" },
+      { sticker: "🚀", text: "Meluncur cepat! Kamu keren banget sejauh ini!" },
+      { sticker: "🌈", text: "Jawaban penuh warna! Teruskan energimu ya!" },
+      { sticker: "🦊", text: "Cerdik dan autentik! Itu baru dirimu!" },
+      { sticker: "🍓", text: "Manis sekali pilihanmu, semanis stroberi!" },
+      { sticker: "🎯", text: "Tepat sasaran! Kamu tahu apa yang kamu mau!" },
+      { sticker: "🐼", text: "Panda gemas kasih dua jempol buatmu! 👍👍" },
+      { sticker: "⚡", text: "Wush! Kecepatan menjawabmu penuh percaya diri!" },
+      { sticker: "🎨", text: "Setiap jawaban melukis peta bakatmu makin jelas!" },
+      { sticker: "🧸", text: "Peluk hangat dari Mochi! Kamu hebat!" },
+      { sticker: "🌻", text: "Auramu positif banget hari ini, lanjut terus!" },
+      { sticker: "🐣", text: "Potensi tersembunyimu mulai menetas nih!" },
+      { sticker: "🔮", text: "Bola kristal Mochi melihat masa depan cerah!" },
+      { sticker: "🍩", text: "Asyik! Jawabanmu bikin suasana makin seru!" },
+      { sticker: "🦋", text: "Sedikit demi sedikit kamu makin mengenal dirimu!" },
+      { sticker: "🔥", text: "On fire! Semangatmu nggak ada lawan!" },
+      { sticker: "🐰", text: "Lompat lebih tinggi ke soal berikutnya, hop hop!" },
+      { sticker: "🎈", text: "Ringan dan menyenangkan, seperti balon udara!" },
+      { sticker: "🍀", text: "Keberuntungan selalu menyertai orang yang kenal dirinya!" },
+      { sticker: "🎵", text: "Nada jawabanmu harmonis sekali!" },
+      { sticker: "🏆", text: "Setengah jalan terlewati! Kamu juara bertahan!" },
+      { sticker: "🐨", text: "Santai tapi pasti, jawabanmu berbobot!" },
+      { sticker: "🍦", text: "Seger banget pilihanmu kayak es krim di siang hari!" },
+      { sticker: "🛸", text: "Sinyal bakatmu tertangkap sampai luar angkasa!" },
+      { sticker: "🌸", text: "Mekar indah! Kepribadianmu menarik sekali!" },
+      { sticker: "🐶", text: "Guk guk! Anjing pintar ikut senang lihat progresmu!" },
+      { sticker: "💎", text: "Berlian di dalam dirimu makin berkilau!" },
+      { sticker: "🍉", text: "Segar dan jujur! Mochi suka gaya jawabmu!" },
+      { sticker: "🎪", text: "Petualangan ini makin seru bareng kamu!" },
+      { sticker: "🦉", text: "Bijaksana sekali pilihan yang barusan kamu klik!" },
+      { sticker: "🍭", text: "Manis! Tinggal belasan soal lagi menuju hasil akhir!" },
+      { sticker: "🌊", text: "Mengalir lancar seperti ombak di pantai!" },
+      { sticker: "🦁", text: "Berani jadi diri sendiri itu kekuatan super!" },
+      { sticker: "🧁", text: "Cupcake spesial buat kamu yang tetap fokus!" },
+      { sticker: "🔭", text: "Mochi sedang meneropong bakat utamamu... hampir terlihat!" },
+      { sticker: "🎀", text: "Rapi dan terarah! Kamu luar biasa!" },
+      { sticker: "🐧", text: "Pinguin imut tepuk tangan buat konsistensimu! 👏" },
+      { sticker: "☀️", text: "Cerah ceria! Energi positifmu kerasa sampai sini!" },
+      { sticker: "🧩", text: "Kepingan puzzle dirimu hampir tersusun lengkap!" },
+      { sticker: "🍒", text: "Cherry on top! Pilihan yang sangat pas!" },
+      { sticker: "🐝", text: "Bzzzz~ Rajin banget menjawab sampai sejauh ini!" },
+      { sticker: "🎠", text: "Seru banget kan? 5 soal terakhir nih!" },
+      { sticker: "👑", text: "Mahkota percaya diri layak buatmu!" },
+      { sticker: "🌠", text: "Bintang jatuh lewat! Semoga impianmu tercapai!" },
+      { sticker: "🎉", text: "Satu langkah terakhir menuju kejutan hasilmu!" },
+      { sticker: "🥳", text: "YEAY! Semua 50 soal selesai! Siap lihat hasilnya?!" }
+    ];
+
+    // ==========================================
+    // 4. LENGKAP 50 SOAL KEHIDUPAN SEHARI-HARI
+    // ==========================================
+    const questions = [
+      {
+        q: "1. Saat punya waktu luang seharian tanpa tugas, hal pertama yang paling bikin kamu semangat adalah...",
+        options: [
+          { text: "Menggambar, edit video, bikin musik, atau mendekorasi kamar", cat: "K" },
+          { text: "Ngulik aplikasi baru, main game strategi, atau bongkar pasang gadget", cat: "L" },
+          { text: "Nongkrong seru bareng teman atau bikin konten ngobrol santai", cat: "C" },
+          { text: "Masak resep baru, olahraga, atau jalan-jalan ke tempat alam", cat: "P" }
+        ]
+      },
+      {
+        q: "2. Kalau kamu diminta bikin proyek kelompok di sekolah/kampus/kantor, peran mana yang otomatis kamu ambil?",
+        options: [
+          { text: "Jadi ketua yang bagi tugas, atur timeline, dan pastikan selesai", cat: "V" },
+          { text: "Bikin desain presentasi biar estetik dan enak dilihat", cat: "K" },
+          { text: "Jadi juru bicara yang presentasi di depan banyak orang", cat: "C" },
+          { text: "Riset data, cek detail teknis, dan beresin bagian yang rumit", cat: "L" }
+        ]
+      },
+      {
+        q: "3. Teman dekatmu tiba-tiba curhat sambil nangis karena masalah pribadi. Reaksi spontanmu adalah...",
+        options: [
+          { text: "Mendengarkan penuh empati, menenangkan, dan memeluknya", cat: "E" },
+          { text: "Membantu menganalisis akar masalah dan kasih solusi logis", cat: "L" },
+          { text: "Mengajaknya keluar makan enak atau jalan-jalan biar mood-nya naik", cat: "P" },
+          { text: "Menghiburnya pakai candaan lucu sampai dia ketawa lagi", cat: "C" }
+        ]
+      },
+      {
+        q: "4. Saat membuka media sosial (TikTok/Instagram/YouTube), konten apa yang paling sering bikin kamu betah scroll?",
+        options: [
+          { text: "Tutorial seni, fotografi, desain estetik, atau cover lagu", cat: "K" },
+          { text: "Tips bisnis, kisah sukses pengusaha, atau self-improvement", cat: "V" },
+          { text: "Fakta sains unik, review teknologi, atau teka-teki logika", cat: "L" },
+          { text: "Resep masakan, DIY kerajinan tangan, atau vlog traveling", cat: "P" }
+        ]
+      },
+      {
+        q: "5. Kamu dikasih modal Rp1.000.000 gratis dengan syarat harus dipakai buat sesuatu yang bermanfaat. Kamu bakal...",
+        options: [
+          { text: "Beli peralatan hobi kreatif (kanvas, mic, kamera, atau software)", cat: "K" },
+          { text: "Jadikan modal jualan kecil-kecilan biar uangnya berlipat ganda", cat: "V" },
+          { text: "Donasikan sebagian dan bikin kegiatan berbagi bareng teman", cat: "E" },
+          { text: "Ikut workshop praktik langsung seperti kelas masak atau olahraga", cat: "P" }
+        ]
+      },
+      {
+        q: "6. Ketika menonton film atau serial favorit, bagian mana yang paling sering kamu perhatikan?",
+        options: [
+          { text: "Sinematografi, pilihan warna, kostum, dan soundtrack-nya", cat: "K" },
+          { text: "Plot twist, celah logika cerita, dan teka-teki misterinya", cat: "L" },
+          { text: "Perkembangan emosi karakter dan hubungan antar tokohnya", cat: "E" },
+          { text: "Gaya bicara dan karisma aktor utamanya saat berdialog", cat: "C" }
+        ]
+      },
+      {
+        q: "7. Kalau kamu tersesat di kota asing dan baterai HP tinggal 5%, langkah apa yang paling mungkin kamu lakukan?",
+        options: [
+          { text: "Langsung ramah bertanya ke warga lokal dengan percaya diri", cat: "C" },
+          { text: "Baca peta fisik/papan petunjuk jalan dan hitung arah mata angin", cat: "L" },
+          { text: "Mengamati suasana sekitar dan mengikuti insting petualangmu", cat: "P" },
+          { text: "Tetap tenang dan cari pusat informasi atau pos keamanan terdekat", cat: "V" }
+        ]
+      },
+      {
+        q: "8. Pujian seperti apa yang paling bikin hatimu berbunga-bunga seharian?",
+        options: [
+          { text: "\"Karya kamu unik banget, punya ciri khas sendiri!\"", cat: "K" },
+          { text: "\"Makasih ya sudah dengerin aku, aku jadi lega banget!\"", cat: "E" },
+          { text: "\"Kamu kalau ngomong seru banget, semua orang langsung fokus!\"", cat: "C" },
+          { text: "\"Otakmu encer banget sih, masalah rumit langsung kelar!\"", cat: "L" }
+        ]
+      },
+      {
+        q: "9. Saat berada di sebuah pesta atau acara kumpul orang baru, posisi kamu biasanya...",
+        options: [
+          { text: "Di tengah lingkaran, kenalan sama banyak orang dan cerita seru", cat: "C" },
+          { text: "Ngobrol mendalam berdua dengan satu orang yang nyambung", cat: "E" },
+          { text: "Mengamati dekorasi tempat, makanan, dan suasana sekitar", cat: "K" },
+          { text: "Ikut bantu tuan rumah mengatur jalannya acara biar lancar", cat: "V" }
+        ]
+      },
+      {
+        q: "10. Jika harus bekerja di sebuah kafe impian, bagian mana yang paling ingin kamu pegang?",
+        options: [
+          { text: "Meracik kopi, bikin latte art, dan eksperimen menu kue baru", cat: "P" },
+          { text: "Mendesain interior kafe, logo, dan feed Instagram-nya", cat: "K" },
+          { text: "Mengelola keuangan, stok bahan, dan strategi promosi kafe", cat: "V" },
+          { text: "Menyapa pelanggan dengan ramah dan bikin mereka betah", cat: "C" }
+        ]
+      },
+      {
+        q: "11. Saat membeli barang baru yang harus dirakit sendiri (seperti lemari atau gadget), kamu cenderung...",
+        options: [
+          { text: "Baca buku panduan dari halaman pertama dengan teliti", cat: "L" },
+          { text: "Langsung praktik rakit pakai tangan, panduan dilihat kalau mentok", cat: "P" },
+          { text: "Minta teman atau keluarga ngerjain bareng biar makin seru", cat: "C" },
+          { text: "Mikirin gimana cara modifikasi tampilannya biar lebih estetik", cat: "K" }
+        ]
+      },
+      {
+        q: "12. Topik obrolan apa yang bisa bikin kamu lupa waktu kalau sudah diskusi?",
+        options: [
+          { text: "Psikologi manusia, kesehatan mental, dan hubungan sosial", cat: "E" },
+          { text: "Ide bisnis, peluang cuan, dan masa depan karier", cat: "V" },
+          { text: "Teknologi masa depan, AI, coding, atau misteri alam semesta", cat: "L" },
+          { text: "Seni, musik, fashion, atau tren budaya pop", cat: "K" }
+        ]
+      },
+      {
+        q: "13. Kalau kamu punya channel YouTube atau podcast sendiri, tema utamanya pasti tentang...",
+        options: [
+          { text: "Bincang santai, komedi, atau wawancara tamu inspiratif", cat: "C" },
+          { text: "Tutorial kreatif, animasi, musik, atau storytelling visual", cat: "K" },
+          { text: "Edukasi bedah kasus, review gadget, atau eksperimen sains", cat: "L" },
+          { text: "Vlog petualangan, kuliner, olahraga, atau kerajinan tangan", cat: "P" }
+        ]
+      },
+      {
+        q: "14. Saat terjadi konflik atau salah paham di antara dua temanmu, kamu biasanya...",
+        options: [
+          { text: "Jadi penengah yang mendengarkan perasaan keduanya dengan adil", cat: "E" },
+          { text: "Mengajak mereka duduk bareng dan mencari solusi paling masuk akal", cat: "V" },
+          { text: "Mencairkan ketegangan dengan humor biar suasana nggak kaku", cat: "C" },
+          { text: "Menganalisis siapa yang keliru berdasarkan fakta yang ada", cat: "L" }
+        ]
+      },
+      {
+        q: "15. Mata pelajaran atau kelas apa yang paling terasa menyenangkan buatmu?",
+        options: [
+          { text: "Seni Budaya, Desain, Bahasa, atau Sastra", cat: "K" },
+          { text: "Matematika, Fisika, Komputer, atau Kimia", cat: "L" },
+          { text: "Olahraga, Prakarya, Tata Boga, atau Biologi Lapangan", cat: "P" },
+          { text: "Ekonomi, Sosiologi, atau Organisasi/Kepemimpinan", cat: "V" }
+        ]
+      },
+      {
+        q: "16. Bagaimana tampilan catatan atau buku agendamu sehari-hari?",
+        options: [
+          { text: "Penuh warna, stiker lucu, coretan gambar, dan tulisan rapi", cat: "K" },
+          { text: "Terstruktur pakai poin-poin, tabel, dan jadwal prioritas", cat: "V" },
+          { text: "Isinya rumus, diagram alur, atau logika pemecahan masalah", cat: "L" },
+          { text: "Jarang nulis panjang, lebih suka langsung praktik di lapangan", cat: "P" }
+        ]
+      },
+      {
+        q: "17. Kalau kamu terpilih jadi panitia pensi atau acara besar, divisi impianmu adalah...",
+        options: [
+          { text: "Ketua Pelaksana atau Divisi Sponsorship", cat: "V" },
+          { text: "Divisi Dekorasi, Dokumentasi, atau Desain Publikasi", cat: "K" },
+          { text: "MC / Host Acara atau Divisi Humas", cat: "C" },
+          { text: "Divisi Perlengkapan, Konsumsi, atau Keamanan Lapangan", cat: "P" }
+        ]
+      },
+      {
+        q: "18. Saat melihat seseorang kesulitan membawa barang berat di jalan, kamu akan...",
+        options: [
+          { text: "Langsung lari menghampiri dan bantu membawakan barangnya", cat: "E" },
+          { text: "Menawarkan bantuan sambil ngajak ngobrol ramah biar dia senang", cat: "C" },
+          { text: "Mencari cara paling efisien (misal pinjam troli atau atur posisi)", cat: "P" },
+          { text: "Mengkoordinir orang sekitar kalau barangnya butuh diangkat bareng", cat: "V" }
+        ]
+      },
+      {
+        q: "19. Game seperti apa yang paling bikin kamu ketagihan memainkannya?",
+        options: [
+          { text: "Game membangun kota, simulasi bisnis, atau strategi perang", cat: "V" },
+          { text: "Game puzzle, detektif, coding, atau teka-teki rumit", cat: "L" },
+          { text: "Game mendesain rumah, karakter, atau dunia open-world estetik", cat: "K" },
+          { text: "Game olahraga, petualangan aksi, atau mabar seru bareng teman", cat: "P" }
+        ]
+      },
+      {
+        q: "20. Apa hal yang paling bikin kamu cepat merasa bosan?",
+        options: [
+          { text: "Tugas rutin yang kaku dan nggak boleh pakai kreativitas", cat: "K" },
+          { text: "Duduk diam berjam-jam tanpa aktivitas fisik atau gerak", cat: "P" },
+          { text: "Sendirian terus tanpa ada teman ngobrol atau interaksi sosial", cat: "C" },
+          { text: "Aturan yang nggak masuk akal dan nggak efisien", cat: "L" }
+        ]
+      },
+      {
+        q: "21. Saat memilih kado ulang tahun untuk sahabat, kamu paling suka memberikan...",
+        options: [
+          { text: "Kado buatan tangan sendiri (scrapbook, lukisan, rajutan)", cat: "K" },
+          { text: "Surat panjang yang menyentuh hati dan barang yang dia butuhkan", cat: "E" },
+          { text: "Voucher pengalaman seru (tiket konser, kuliner, atau wahana)", cat: "P" },
+          { text: "Gadget atau barang fungsional yang sangat berguna sehari-hari", cat: "L" }
+        ]
+      },
+      {
+        q: "22. Jika kamu diberi kesempatan membuat satu perubahan di lingkungan sekitarmu, kamu ingin...",
+        options: [
+          { text: "Membangun ruang komunitas untuk anak muda berbagi cerita & konseling", cat: "E" },
+          { text: "Membuat aplikasi pintar yang memudahkan layanan masyarakat", cat: "L" },
+          { text: "Menyulap tembok kusam kota jadi mural seni yang penuh warna", cat: "K" },
+          { text: "Membuka program pelatihan wirausaha mandiri bagi warga", cat: "V" }
+        ]
+      },
+      {
+        q: "23. Gaya belajarmu yang paling efektif saat menghadapi ujian adalah...",
+        options: [
+          { text: "Menjelaskan ulang materi ke teman seolah-olah jadi guru", cat: "C" },
+          { text: "Membuat mind-map warna-warni dan ilustrasi visual", cat: "K" },
+          { text: "Latihan soal terus-menerus dan mencari pola jawabannya", cat: "L" },
+          { text: "Belajar kelompok sambil diskusi saling membantu", cat: "E" }
+        ]
+      },
+      {
+        q: "24. Ketika mendengar lagu baru yang enak, hal pertama yang menarik perhatianmu adalah...",
+        options: [
+          { text: "Melodi, aransemen instrumen, dan nuansa emosional musiknya", cat: "K" },
+          { text: "Makna liriknya yang dalam dan menyentuh perasaan", cat: "E" },
+          { text: "Beat-nya yang asyik buat joget, olahraga, atau nyanyi bareng", cat: "P" },
+          { text: "Bagaimana lagu itu bisa viral dan sukses di tangga lagu", cat: "V" }
+        ]
+      },
+      {
+        q: "25. Kamu sedang antre panjang di kasir dan antreannya macet. Apa yang ada di pikiranmu?",
+        options: [
+          { text: "\"Coba sistem kasirnya pakai auto-scan, pasti 3x lebih cepat!\"", cat: "L" },
+          { text: "\"Kasihan kasirnya kelihatan capek banget, pasti dari pagi berdiri\"", cat: "E" },
+          { text: "Ajak ngobrol orang di sebelah biar waktu nunggu nggak kerasa", cat: "C" },
+          { text: "Mengamati desain kemasan produk di rak sekitar kasir", cat: "K" }
+        ]
+      },
+      {
+        q: "26. Kalau kamu menjadi hewan, hewan mana yang paling mewakili kepribadianmu?",
+        options: [
+          { text: "Lumba-lumba — ceria, komunikatif, dan suka bermain bersama", cat: "C" },
+          { text: "Burung Hantu — pengamat tajam, cerdas, dan suka menganalisis", cat: "L" },
+          { text: "Singa — berani memimpin, tegas, dan melindungi kelompok", cat: "V" },
+          { text: "Golden Retriever — hangat, setia, dan peka perasaan", cat: "E" }
+        ]
+      },
+      {
+        q: "27. Saat liburan ke tempat wisata alam, aktivitas wajib yang paling kamu tunggu adalah...",
+        options: [
+          { text: "Hiking, berenang, camping, atau mencoba olahraga ekstrem", cat: "P" },
+          { text: "Hunting foto dan video estetik dari berbagai sudut unik", cat: "K" },
+          { text: "Menyusun itinerary perjalanan biar semua tempat ter-cover rapi", cat: "V" },
+          { text: "Ngobrol santai di api unggun sambil berbagi cerita hidup", cat: "E" }
+        ]
+      },
+      {
+        q: "28. Teman-temanmu sering datang padamu ketika mereka butuh bantuan untuk...",
+        options: [
+          { text: "Memperbaiki HP/laptop error atau mencari info penting", cat: "L" },
+          { text: "Memilih outfit, mengedit foto, atau cari ide caption keren", cat: "K" },
+          { text: "Curhat masalah hati dan mencari ketenangan", cat: "E" },
+          { text: "Negosiasi, meyakinkan orang lain, atau latihan presentasi", cat: "C" }
+        ]
+      },
+      {
+        q: "29. Jika kamu menulis sebuah buku, genre apa yang akan terpampang di sampulnya?",
+        options: [
+          { text: "Novel fantasi penuh imajinasi atau kumpulan puisi ilustrasi", cat: "K" },
+          { text: "Panduan membangun bisnis dan kepemimpinan dari nol", cat: "V" },
+          { text: "Buku psikologi populer tentang penyembuhan luka batin", cat: "E" },
+          { text: "Buku petualangan kuliner dan eksplorasi tempat tersembunyi", cat: "P" }
+        ]
+      },
+      {
+        q: "30. Dalam sebuah tim olahraga atau game mabar, peran favoritmu adalah...",
+        options: [
+          { text: "Kapten yang mengatur formasi dan strategi kemenangan", cat: "V" },
+          { text: "Support / Healer yang selalu menjaga teman satu tim", cat: "E" },
+          { text: "Striker / Eksekutor utama di garis depan lapangan", cat: "P" },
+          { text: "Shot-caller yang aktif komunikasi kasih info ke semua tim", cat: "C" }
+        ]
+      },
+      {
+        q: "31. Saat melihat masalah sampah plastik di lingkungan, ide pertama yang muncul di kepalamu adalah...",
+        options: [
+          { text: "Mendaur ulang botol plastik jadi kerajinan atau karya seni unik", cat: "K" },
+          { text: "Membuat mesin pemilah sampah otomatis berbasis sensor", cat: "L" },
+          { text: "Menggalang kampanye edukasi seru ke sekolah-sekolah", cat: "C" },
+          { text: "Membangun bank sampah yang menguntungkan warga secara ekonomi", cat: "V" }
+        ]
+      },
+      {
+        q: "32. Kamu lebih suka bekerja di lingkungan yang seperti apa?",
+        options: [
+          { text: "Studio kreatif yang bebas, fleksibel, dan penuh inspirasi visual", cat: "K" },
+          { text: "Lab teknologi atau ruang tenang dengan perangkat canggih", cat: "L" },
+          { text: "Lapangan terbuka, dapur, bengkel kerja, atau lokasi berpindah", cat: "P" },
+          { text: "Ruang kolaborasi ramai yang penuh diskusi dan interaksi manusia", cat: "C" }
+        ]
+      },
+      {
+        q: "33. Saat mengambil keputusan penting dalam hidup, pertimbangan utamamu adalah...",
+        options: [
+          { text: "Data, fakta, dan perhitungan untung-rugi yang rasional", cat: "L" },
+          { text: "Dampak keputusan tersebut terhadap perasaan orang-orang tersayang", cat: "E" },
+          { text: "Visi jangka panjang dan peluang pertumbuhan ke depannya", cat: "V" },
+          { text: "Kata hati, intuisi, dan kebebasan berekspresi", cat: "K" }
+        ]
+      },
+      {
+        q: "34. Jika kamu diundang jadi pembicara di depan 500 orang, perasaanmu adalah...",
+        options: [
+          { text: "Super semangat! Kesempatan emas buat berbagi energi dan cerita", cat: "C" },
+          { text: "Siap tampil asal materi dan data presentasinya sudah terstruktur", cat: "V" },
+          { text: "Lebih suka menyiapkan visual slide atau video pembukaannya saja", cat: "K" },
+          { text: "Berharap topiknya bisa menyentuh dan membantu banyak orang", cat: "E" }
+        ]
+      },
+      {
+        q: "35. Hobi akhir pekan mana yang terdengar paling menggoda buatmu?",
+        options: [
+          { text: "Ikut kelas tembikar (pottery), melukis, atau merangkai bunga", cat: "P" },
+          { text: "Merakit PC, belajar bahasa pemrograman, atau main catur", cat: "L" },
+          { text: "Jadi relawan di panti asuhan atau komunitas peduli hewan", cat: "E" },
+          { text: "Bikin mini vlog estetik atau rekaman cover musik di kamar", cat: "K" }
+        ]
+      },
+      {
+        q: "36. Bagaimana caramu meyakinkan teman untuk setuju dengan idemu?",
+        options: [
+          { text: "Menjelaskan dengan antusiasme tinggi dan cerita yang menarik", cat: "C" },
+          { text: "Menunjukkan bukti, angka, dan logika kenapa ide ini berhasil", cat: "L" },
+          { text: "Menunjukkan rencana langkah demi langkah dan target hasilnya", cat: "V" },
+          { text: "Membuat sketsa atau contoh visual biar mereka langsung terbayang", cat: "K" }
+        ]
+      },
+      {
+        q: "37. Kamu menemukan dompet berisi uang dan kartu identitas di jalan. Setelah mengembalikannya, bagian mana yang bikin kamu paling bahagia?",
+        options: [
+          { text: "Melihat ekspresi lega dan senyum haru pemilik dompet", cat: "E" },
+          { text: "Bangga karena berhasil melacak pemiliknya lewat petunjuk kartu", cat: "L" },
+          { text: "Senang bisa ngobrol kenalan baru sama pemilik dompet itu", cat: "C" },
+          { text: "Puas karena melakukan tindakan nyata yang benar di lapangan", cat: "P" }
+        ]
+      },
+      {
+        q: "38. Jika harus memilih satu alat ajaib, kamu mau yang mana?",
+        options: [
+          { text: "Kuas ajaib yang bisa menghidupkan gambar apa pun jadi nyata", cat: "K" },
+          { text: "Kacamata super yang bisa menganalisis cara kerja semua benda", cat: "L" },
+          { text: "Mikrofon karisma yang bikin siapa pun terinspirasi mendengar", cat: "C" },
+          { text: "Kompas petualang yang selalu menunjuk ke peluang terbaik", cat: "V" }
+        ]
+      },
+      {
+        q: "39. Saat makan di restoran baru dengan menu yang unik, kamu cenderung...",
+        options: [
+          { text: "Menebak bahan-bahan rahasia dan cara chef memasaknya", cat: "P" },
+          { text: "Memfoto plating makanannya dulu karena tampilannya cantik", cat: "K" },
+          { text: "Mengajak ngobrol pelayan tentang menu rekomendasi terbaik", cat: "C" },
+          { text: "Menilai apakah harga, porsi, dan konsep bisnis restorannya pas", cat: "V" }
+        ]
+      },
+      {
+        q: "40. Ketika melihat seorang anak kecil menangis karena es krimnya jatuh, tindakan pertamamu adalah...",
+        options: [
+          { text: "Menghampirinya lembut, menghibur, dan membelikan yang baru", cat: "E" },
+          { text: "Bikin ekspresi wajah lucu biar si anak berhenti nangis dan ketawa", cat: "C" },
+          { text: "Cepat membersihkan tumpahan es krim biar nggak bikin orang kepeleset", cat: "P" },
+          { text: "Mencari orang tuanya di sekitar area tersebut dengan sigap", cat: "V" }
+        ]
+      },
+      {
+        q: "41. Apa definisi \"sukses\" yang paling dekat dengan hatimu?",
+        options: [
+          { text: "Karyaku dinikmati dan menginspirasi imajinasi banyak orang", cat: "K" },
+          { text: "Mampu memecahkan masalah besar lewat inovasi dan kecerdasan", cat: "L" },
+          { text: "Hidupku bermanfaat dan membawa kebahagiaan bagi sesama", cat: "E" },
+          { text: "Membangun usaha atau tim besar yang berdampak luas", cat: "V" }
+        ]
+      },
+      {
+        q: "42. Dalam percakapan grup chat, kamu biasanya berperan sebagai...",
+        options: [
+          { text: "Si paling aktif kirim stiker lucu, meme, dan menghidupkan grup", cat: "C" },
+          { text: "Si penengah yang selalu kasih respons hangat kalau ada yang curhat", cat: "E" },
+          { text: "Si perencana yang ngatur jadwal ketemuan dan patungan", cat: "V" },
+          { text: "Si pemberi info fakta valid kalau ada berita hoaks beredar", cat: "L" }
+        ]
+      },
+      {
+        q: "43. Kalau kamu punya waktu 1 tahun penuh bebas biaya untuk belajar satu skill baru, kamu pilih...",
+        options: [
+          { text: "Belajar animasi 3D, produksi musik, atau desain fashion", cat: "K" },
+          { text: "Belajar coding, kecerdasan buatan (AI), atau robotika", cat: "L" },
+          { text: "Belajar seni kuliner profesional, menyelam, atau pertukangan", cat: "P" },
+          { text: "Belajar psikologi konseling atau terapi kesehatan", cat: "E" }
+        ]
+      },
+      {
+        q: "44. Saat menghadapi situasi darurat atau deadline mepet, kamu biasanya...",
+        options: [
+          { text: "Langsung ambil komando, bagi tugas cepat, dan fokus target", cat: "V" },
+          { text: "Tetap kepala dingin, cari jalan pintas teknis paling efisien", cat: "L" },
+          { text: "Menenangkan anggota tim yang panik biar semua tetap solid", cat: "E" },
+          { text: "Langsung turun tangan eksekusi bagian tersulit tanpa banyak tanya", cat: "P" }
+        ]
+      },
+      {
+        q: "45. Bagian rumah mana yang paling sering kamu perhatikan atau ingin kamu tata ulang?",
+        options: [
+          { text: "Dapur dan taman belakang — tempat berkreasi dan aktivitas fisik", cat: "P" },
+          { text: "Ruang kerja/belajar — biar ergonomis, rapi, dan penuh gadget", cat: "L" },
+          { text: "Kamar tidur — biar estetik, cozy, dan sesuai selera senimu", cat: "K" },
+          { text: "Ruang keluarga — biar nyaman buat kumpul dan ngobrol hangat", cat: "E" }
+        ]
+      },
+      {
+        q: "46. Jika kamu membuat aplikasi smartphone sendiri, aplikasi itu pasti berfungsi untuk...",
+        options: [
+          { text: "Mengedit foto/video atau membuat karya seni digital dengan mudah", cat: "K" },
+          { text: "Mengatur keuangan, produktivitas, dan target bisnis harian", cat: "V" },
+          { text: "Menghubungkan orang-orang yang butuh teman cerita atau konseling", cat: "E" },
+          { text: "Menganalisis data kesehatan, cuaca, atau efisiensi energi", cat: "L" }
+        ]
+      },
+      {
+        q: "47. Orang-orang di sekitarmu sering bilang bahwa kamu punya energi yang...",
+        options: [
+          { text: "Ceria, ekspresif, dan gampang akrab sama siapa saja", cat: "C" },
+          { text: "Tenang, bijak, dan bikin orang nyaman di dekatmu", cat: "E" },
+          { text: "Aktif, tangkas, dan nggak pernah kehabisan tenaga", cat: "P" },
+          { text: "Tegas, ambisius, dan punya aura pemimpin alami", cat: "V" }
+        ]
+      },
+      {
+        q: "48. Saat menonton pertunjukan sulap, reaksi spontan di otakmu adalah...",
+        options: [
+          { text: "\"Gimana trik logika dan mekanisme di balik layar sulapnya ya?\"", cat: "L" },
+          { text: "\"Keren banget cara pesulapnya menguasai panggung dan penonton!\"", cat: "C" },
+          { text: "\"Tata cahaya, musik, dan kostum pertunjukannya dramatis banget!\"", cat: "K" },
+          { text: "\"Pasti butuh latihan tangan ribuan jam buat secepat itu!\"", cat: "P" }
+        ]
+      },
+      {
+        q: "49. Jika kamu membuka booth di bazar kampus/komunitas, jualan apa yang paling kamu banggakan?",
+        options: [
+          { text: "Makanan/minuman homemade racikan spesialmu sendiri", cat: "P" },
+          { text: "Merchandise ilustrasi, stiker, dan aksesoris desain sendiri", cat: "K" },
+          { text: "Produk apa saja asal kamu yang jadi MC promosi di depan booth", cat: "C" },
+          { text: "Sistem paket bundling promo dengan perhitungan profit matang", cat: "V" }
+        ]
+      },
+      {
+        q: "50. Pertanyaan terakhir! Setelah menyelesaikan 50 soal ini, perasaan apa yang paling kamu rasakan?",
+        options: [
+          { text: "Penasaran banget sama hasil analisis skor dan persentasenya!", cat: "L" },
+          { text: "Senang karena tampilannya lucu, penuh warna, dan menggemaskan!", cat: "K" },
+          { text: "Nggak sabar mau share hasilnya ke teman-teman buat dibandingin!", cat: "C" },
+          { text: "Termotivasi buat langsung action mengembangkan potensiku!", cat: "V" }
+        ]
+      }
+    ];
+
+    // ==========================================
+    // 5. STATE & LOGIKA KUIS INTERAKTIF
+    // ==========================================
+    let currentIdx = 0;
+    let userName = "Petualang";
+    let scores = { K: 0, L: 0, C: 0, V: 0, E: 0, P: 0 };
+    let isTransitioning = false;
+
+    const welcomeScreen = document.getElementById('welcomeScreen');
+    const quizScreen = document.getElementById('quizScreen');
+    const resultScreen = document.getElementById('resultScreen');
+
+    const userNameInput = document.getElementById('userNameInput');
+    const startBtn = document.getElementById('startBtn');
+    const questionCounter = document.getElementById('questionCounter');
+    const playerTag = document.getElementById('playerTag');
+    const progressFill = document.getElementById('progressFill');
+    const progressRunner = document.getElementById('progressRunner');
+    const mascotAvatar = document.getElementById('mascotAvatar');
+    const mascotSpeech = document.getElementById('mascotSpeech');
+    const questionText = document.getElementById('questionText');
+    const optionsContainer = document.getElementById('optionsContainer');
+
+    const reactionPopup = document.getElementById('reactionPopup');
+    const popupSticker = document.getElementById('popupSticker');
+    const popupMsg = document.getElementById('popupMsg');
+
+    const runnerIcons = ["🚀", "🐱", "🦄", "🌈", "🦊", "🐰", "🌟"];
+
+    function showScreen(screenEl) {
+      [welcomeScreen, quizScreen, resultScreen].forEach(s => s.classList.remove('active'));
+      screenEl.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    startBtn.addEventListener('click', () => {
+      const inputVal = userNameInput.value.trim();
+      userName = inputVal ? inputVal : "Petualang";
+      initAudio();
+      playPopSound();
+      startSoftBGM();
+      startQuiz();
+    });
+
+    userNameInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') startBtn.click();
+    });
+
+    function startQuiz() {
+      currentIdx = 0;
+      scores = { K: 0, L: 0, C: 0, V: 0, E: 0, P: 0 };
+      playerTag.textContent = `🌟 ${userName}`;
+      showScreen(quizScreen);
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      isTransitioning = false;
+      const qData = questions[currentIdx];
+      const total = questions.length;
+      const percent = ((currentIdx + 1) / total) * 100;
+
+      questionCounter.textContent = `Soal ${currentIdx + 1} / ${total}`;
+      progressFill.style.width = `${percent}%`;
+      progressRunner.style.left = `${Math.min(percent, 96)}%`;
+      progressRunner.textContent = runnerIcons[currentIdx % runnerIcons.length];
+
+      // Mascot greeting per question
+      if (currentIdx === 0) {
+        mascotAvatar.textContent = "🦄";
+        mascotSpeech.textContent = `Hai ${userName}! Yuk pilih jawaban yang paling menggambarkan dirimu! ✨`;
+      } else {
+        const prevReaction = reactions[currentIdx - 1];
+        mascotAvatar.textContent = prevReaction.sticker;
+        mascotSpeech.textContent = prevReaction.text.replace("Mochi", `Mochi & ${userName}`);
+      }
+
+      // Re-trigger avatar bounce
+      mascotAvatar.style.animation = 'none';
+      mascotAvatar.offsetHeight;
+      mascotAvatar.style.animation = 'bouncePop 0.5s ease';
+
+      questionText.textContent = qData.q;
+      optionsContainer.innerHTML = '';
+
+      const letters = ['A', 'B', 'C', 'D'];
+      qData.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `
+          <span class="option-badge">${letters[i]}</span>
+          <span>${opt.text}</span>
+        `;
+        btn.addEventListener('click', () => handleAnswer(opt.cat, btn));
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function handleAnswer(category, btnEl) {
+      if (isTransitioning) return;
+      isTransitioning = true;
+
+      playPopSound();
+      btnEl.classList.add('selected');
+
+      // Disable all buttons during brief celebration
+      const allBtns = optionsContainer.querySelectorAll('.option-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      // Add score
+      scores[category] += 1;
+
+      // Show cute reaction popup + mini confetti burst
+      const reactObj = reactions[currentIdx];
+      popupSticker.textContent = reactObj.sticker;
+      popupMsg.textContent = reactObj.text;
+      reactionPopup.classList.add('show');
+      launchConfetti(28);
+
+      setTimeout(() => {
+        reactionPopup.classList.remove('show');
+        currentIdx++;
+        if (currentIdx < questions.length) {
+          renderQuestion();
+        } else {
+          showResults();
+        }
+      }, 780);
+    }
+
+    // ==========================================
+    // 6. HASIL AKHIR & GRAFIK PERSENTASE
+    // ==========================================
+    let finalShareText = "";
+
+    function showResults() {
+      if (bgmInterval) clearInterval(bgmInterval);
+      playFanfareSound();
+      showScreen(resultScreen);
+      launchConfetti(140);
+
+      // Sort categories by score descending
+      const sorted = Object.keys(scores)
+        .map(key => ({
+          key,
+          score: scores[key],
+          percent: Math.round((scores[key] / questions.length) * 100),
+          ...categories[key]
+        }))
+        .sort((a, b) => b.score - a.score);
+
+      const top = sorted[0];
+
+      document.getElementById('resultEmoji').textContent = top.emoji;
+      document.getElementById('resultUserGreeting').textContent = `Selamat, ${userName}! Bakat Utamamu Adalah:`;
+      document.getElementById('resultTitle').textContent = `${top.emoji} ${top.name}`;
+      document.getElementById('resultDesc').textContent = top.desc;
+
+      const tagsContainer = document.getElementById('resultTags');
+      tagsContainer.innerHTML = '';
+      top.tags.forEach(tag => {
+        const span = document.createElement('span');
+        span.className = 'talent-tag';
+        span.textContent = `✨ ${tag}`;
+        tagsContainer.appendChild(span);
+      });
+
+      // Render colorful chart bars
+      const chartBars = document.getElementById('chartBars');
+      chartBars.innerHTML = '';
+      sorted.forEach(item => {
+        const barDiv = document.createElement('div');
+        barDiv.className = 'bar-item';
+        barDiv.innerHTML = `
+          <div class="bar-label">
+            <span>${item.emoji} ${item.name}</span>
+            <span>${item.percent}% (${item.score} soal)</span>
+          </div>
+          <div class="bar-bg">
+            <div class="bar-fill" style="background: ${item.color};" data-width="${Math.max(item.percent, 4)}%"></div>
+          </div>
+        `;
+        chartBars.appendChild(barDiv);
+      });
+
+      // Animate bars
+      setTimeout(() => {
+        document.querySelectorAll('.bar-fill').forEach(bar => {
+          bar.style.width = bar.getAttribute('data-width');
+        });
+      }, 150);
+
+      finalShareText = `✨ Hasil Tes Bakat & Minat ${userName} ✨\nBakat Utamaku: ${top.emoji} ${top.name} (${top
